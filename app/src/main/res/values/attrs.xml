@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CountdownView">
+        <attr name="cdv_time_width" format="dimension" />
+        <attr name="cdv_time_height" format="dimension" />
+        <attr name="cdv_time_size" format="dimension" />
+        <attr name="cdv_time_color" format="color" />
+        <attr name="cdv_time_bg_color" format="color" />
+        <attr name="cdv_time_bg_corner_radius" format="dimension" />
+        <attr name="cdv_time_bg" format="reference" />
+        <attr name="cdv_div_width" format="dimension" />
+        <attr name="cdv_div_margin_x" format="dimension" />
+        <attr name="cdv_div_margin_y" format="dimension" />
+        <attr name="cdv_div_color" format="color" />
+    </declare-styleable>
+
+</resources>
