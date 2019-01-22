@@ -1,4 +1,4 @@
-package com.josephus.customview;
+package com.josephus.customview.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -12,9 +12,14 @@ import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.josephus.customview.DensityUtils;
+import com.josephus.customview.R;
+
+/**
+ * 自定义倒计时 View
+ */
 public class CountdownView extends View {
 
-    private static final int TRANSPARENT = 0x00000000;
     private static final int BLACK = 0xFF000000;
     private static final int WHITE = 0xFFFFFFFF;
 
@@ -139,7 +144,7 @@ public class CountdownView extends View {
             Paint.FontMetricsInt fontMetrics = timeTextPaint.getFontMetricsInt();
             canvas.drawText(times[i],
                     timeWidth * i + divMarginX * 2 * i + divWidth * i + timeWidth / 2,
-                    (getMeasuredHeight() - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top,
+                    (getMeasuredHeight() - fontMetrics.bottom + fontMetrics.top) / 2.0f - fontMetrics.top,
                     timeTextPaint);
         }
     }

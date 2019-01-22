@@ -2,8 +2,8 @@ package com.josephus.customview;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.EditText;
-import android.widget.TextView;
+
+import com.josephus.customview.view.CountdownView;
 
 public class MainActivity extends AppCompatActivity {
 
