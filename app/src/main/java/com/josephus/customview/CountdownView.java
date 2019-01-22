@@ -2,6 +2,8 @@ package com.josephus.customview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -37,6 +39,7 @@ public class CountdownView extends View {
     private float divFirstY;
     private float divSecondY;
     private Rect textBounds;
+    private Bitmap bitmap;
 
     private String[] times;
     private CountDownTimer countDownTimer;
@@ -80,16 +83,20 @@ public class CountdownView extends View {
 
         timeBgPaint = new Paint();
         timeBgPaint.setStyle(Paint.Style.FILL);
-        timeBgPaint.setColor(timeBgColor);
+        if (timeBg > 0) {
+            bitmap = BitmapFactory.decodeResource(getResources(), timeBg);
+        } else {
+            timeBgPaint.setColor(timeBgColor);
+        }
 
         timeDivPaint = new Paint();
         timeDivPaint.setStyle(Paint.Style.FILL);
         timeDivPaint.setColor(divColor);
 
         rectF = new RectF(0, 0, timeWidth, timeHeight);
-        divRadius = divWidth / 2;
-        divFirstY = (timeHeight - divMarginY - divWidth * 2) / 2 + divRadius;
-        divSecondY = timeHeight - (timeHeight - divMarginY - divWidth * 2) / 2 - divRadius;
+        divRadius = divWidth / 2.0f;
+        divFirstY = (timeHeight - divMarginY - divWidth * 2.0f) / 2.0f + divRadius;
+        divSecondY = timeHeight - (timeHeight - divMarginY - divWidth * 2.0f) / 2.0f - divRadius;
         textBounds = new Rect();
 
         times = new String[4];
@@ -115,7 +122,11 @@ public class CountdownView extends View {
             // draw time bg
             rectF.left = timeWidth * i + divMarginX * 2 * i + divWidth * i;
             rectF.right = timeWidth * (i + 1) + divMarginX * 2 * i + divWidth * i;
-            canvas.drawRoundRect(rectF, timeBgCornerRadius, timeBgCornerRadius, timeBgPaint);
+            if (timeBg > 0) {
+                canvas.drawBitmap(bitmap, null, rectF, timeBgPaint);
+            } else {
+                canvas.drawRoundRect(rectF, timeBgCornerRadius, timeBgCornerRadius, timeBgPaint);
+            }
 
             // draw time div
             if (i < 3) {
