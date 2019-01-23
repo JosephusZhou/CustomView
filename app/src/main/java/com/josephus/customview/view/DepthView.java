@@ -175,7 +175,7 @@ public class DepthView extends View {
             itemCoinPricePaint.setColor(downColor);
         }
         canvas.drawText(data.askCoinPrice,
-                getMeasuredWidth() - paddingWidth - textBounds.right - amountMarginLeft,
+                getMeasuredWidth() - paddingWidth - textBounds.right - coinPriceMarginRight,
                 baselineY,
                 itemCoinPricePaint);
 
@@ -188,7 +188,7 @@ public class DepthView extends View {
                 baselineY,
                 itemCurrencyPaint);
         canvas.drawText(data.askCurrencyPrice,
-                getMeasuredWidth() - paddingWidth - textBounds.right - amountMarginLeft,
+                getMeasuredWidth() - paddingWidth - textBounds.right - coinPriceMarginRight,
                 baselineY,
                 itemCurrencyPaint);
     }
