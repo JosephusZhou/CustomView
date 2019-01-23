@@ -144,7 +144,7 @@ public class CountdownView extends View {
             Paint.FontMetricsInt fontMetrics = timeTextPaint.getFontMetricsInt();
             canvas.drawText(times[i],
                     timeWidth * i + divMarginX * 2 * i + divWidth * i + timeWidth / 2,
-                    (getMeasuredHeight() - fontMetrics.bottom + fontMetrics.top) / 2.0f - fontMetrics.top,
+                    getMeasuredHeight() / 2.0f + ((fontMetrics.descent - fontMetrics.ascent) / 2.0f - fontMetrics.descent),
                     timeTextPaint);
         }
     }

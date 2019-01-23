@@ -15,4 +15,17 @@
         <attr name="cdv_div_color" format="color" />
     </declare-styleable>
 
+    <declare-styleable name="DepthView">
+        <attr name="dv_padding_width" format="dimension" />
+        <attr name="dv_padding_height" format="dimension" />
+        <attr name="dv_bid_bg_color" format="color" />
+        <attr name="dv_ask_bg_color" format="color" />
+        <attr name="dv_up_color" format="color" />
+        <attr name="dv_down_color" format="color" />
+        <attr name="dv_text_color" format="color" />
+        <attr name="dv_amount_size" format="dimension" />
+        <attr name="dv_coin_size" format="dimension" />
+        <attr name="dv_currency_size" format="dimension" />
+    </declare-styleable>
+
 </resources>
