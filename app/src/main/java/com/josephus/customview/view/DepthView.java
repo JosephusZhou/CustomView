@@ -47,7 +47,7 @@ public class DepthView extends View {
     private Paint itemCurrencyPaint;
     private RectF rectF;
     private Rect textBounds;
-    private int subSize = 1;
+    private int subSize;
 
     private DepthViewData data;
 
@@ -153,27 +153,11 @@ public class DepthView extends View {
         Paint.FontMetricsInt fontMetrics = itemAmountPaint.getFontMetricsInt();
         float baselineY = getMeasuredHeight() / 2.0f + ((fontMetrics.descent - fontMetrics.ascent) / 2.0f - fontMetrics.descent);
 
-        itemAmountPaint.getTextBounds(data.bidAmount, 0, data.bidAmount.length(), textBounds);
-        int w = textBounds.width() + amountMarginLeft;
-        while(w > itemMaxWidth / 2.0f) {
-            itemAmountPaint.setTextSize(amountSize - subSize);
-            itemAmountPaint.getTextBounds(data.bidAmount, 0, data.bidAmount.length(), textBounds);
-            w = textBounds.width() + amountMarginLeft;
-            subSize ++;
-        }
+        scaleTextSize(itemAmountPaint, itemMaxWidth, amountMarginLeft, amountSize, data.bidAmount);
         canvas.drawText(data.bidAmount, paddingWidth + amountMarginLeft,
                 baselineY, itemAmountPaint);
 
-        subSize = 1;
-        itemAmountPaint.setTextSize(amountSize);
-        itemAmountPaint.getTextBounds(data.askAmount, 0, data.askAmount.length(), textBounds);
-        w = textBounds.width() + amountMarginLeft;
-        while(w > itemMaxWidth / 2.0f) {
-            itemAmountPaint.setTextSize(amountSize - subSize);
-            itemAmountPaint.getTextBounds(data.askAmount, 0, data.askAmount.length(), textBounds);
-            w = textBounds.width() + amountMarginLeft;
-            subSize ++;
-        }
+        scaleTextSize(itemAmountPaint, itemMaxWidth, amountMarginLeft, amountSize, data.askAmount);
         canvas.drawText(data.askAmount, paddingWidth * 2 + itemMaxWidth + amountMarginLeft,
                 baselineY, itemAmountPaint);
 
@@ -181,15 +165,8 @@ public class DepthView extends View {
         fontMetrics = itemCoinPricePaint.getFontMetricsInt();
         baselineY = (paddingHeight + getMeasuredHeight() / 2.0f) / 2.0f + ((fontMetrics.descent - fontMetrics.ascent) / 2.0f - fontMetrics.descent);
 
+        scaleTextSize(itemCoinPricePaint, itemMaxWidth, coinPriceMarginRight, coinSize, data.bidCoinPrice);
         itemCoinPricePaint.getTextBounds(data.bidCoinPrice, 0, data.bidCoinPrice.length(), textBounds);
-        subSize = 1;
-        w = textBounds.width() + coinPriceMarginRight;
-        while(w > itemMaxWidth / 2.0f) {
-            itemCoinPricePaint.setTextSize(coinSize - subSize);
-            itemCoinPricePaint.getTextBounds(data.bidCoinPrice, 0, data.bidCoinPrice.length(), textBounds);
-            w = textBounds.width() + coinPriceMarginRight;
-            subSize ++;
-        }
         if (data.bidUpOrDown == 1) {
             itemCoinPricePaint.setColor(upColor);
         } else {
@@ -200,16 +177,8 @@ public class DepthView extends View {
                 baselineY,
                 itemCoinPricePaint);
 
-        itemCoinPricePaint.setTextSize(coinSize);
-        subSize = 1;
+        scaleTextSize(itemCoinPricePaint, itemMaxWidth, coinPriceMarginRight, coinSize, data.askCoinPrice);
         itemCoinPricePaint.getTextBounds(data.askCoinPrice, 0, data.askCoinPrice.length(), textBounds);
-        w = textBounds.width() + coinPriceMarginRight;
-        while(w > itemMaxWidth / 2.0f) {
-            itemCoinPricePaint.setTextSize(coinSize - subSize);
-            itemCoinPricePaint.getTextBounds(data.askCoinPrice, 0, data.askCoinPrice.length(), textBounds);
-            w = textBounds.width() + coinPriceMarginRight;
-            subSize ++;
-        }
         if (data.askUpOrDown == 1) {
             itemCoinPricePaint.setColor(upColor);
         } else {
@@ -224,34 +193,32 @@ public class DepthView extends View {
         fontMetrics = itemCurrencyPaint.getFontMetricsInt();
         baselineY = (getMeasuredHeight() / 2.0f + (getMeasuredHeight() - paddingHeight)) / 2.0f + ((fontMetrics.descent - fontMetrics.ascent) / 2.0f - fontMetrics.descent);
 
+        scaleTextSize(itemCurrencyPaint, itemMaxWidth, coinPriceMarginRight, currencySize, data.bidCurrencyPrice);
         itemCurrencyPaint.getTextBounds(data.bidCurrencyPrice, 0, data.bidCurrencyPrice.length(), textBounds);
-        subSize = 1;
-        w = textBounds.width() + coinPriceMarginRight;
-        while(w > itemMaxWidth / 2.0f) {
-            itemCurrencyPaint.setTextSize(currencySize - subSize);
-            itemCurrencyPaint.getTextBounds(data.bidCurrencyPrice, 0, data.bidCurrencyPrice.length(), textBounds);
-            w = textBounds.width() + coinPriceMarginRight;
-            subSize ++;
-        }
         canvas.drawText(data.bidCurrencyPrice,
                 paddingWidth + itemMaxWidth - coinPriceMarginRight - (textBounds.right - textBounds.left),
                 baselineY,
                 itemCurrencyPaint);
 
-        itemCurrencyPaint.setTextSize(currencySize);
+        scaleTextSize(itemCurrencyPaint, itemMaxWidth, coinPriceMarginRight, currencySize, data.askCurrencyPrice);
         itemCurrencyPaint.getTextBounds(data.askCurrencyPrice, 0, data.askCurrencyPrice.length(), textBounds);
-        subSize = 1;
-        w = textBounds.width() + coinPriceMarginRight;
-        while(w > itemMaxWidth / 2.0f) {
-            itemCurrencyPaint.setTextSize(currencySize - subSize);
-            itemCurrencyPaint.getTextBounds(data.askCurrencyPrice, 0, data.askCurrencyPrice.length(), textBounds);
-            w = textBounds.width() + coinPriceMarginRight;
-            subSize ++;
-        }
         canvas.drawText(data.askCurrencyPrice,
                 getMeasuredWidth() - paddingWidth - textBounds.right - coinPriceMarginRight,
                 baselineY,
                 itemCurrencyPaint);
+    }
+
+    private void scaleTextSize(Paint paint, float maxWidth, int otherWidth, int maxSize, String text) {
+        subSize = 1;
+        paint.setTextSize(maxSize);
+        paint.getTextBounds(text, 0, text.length(), textBounds);
+        int width = textBounds.width() + otherWidth;
+        while (width > maxWidth / 2.0f) {
+            paint.setTextSize(maxSize - subSize);
+            paint.getTextBounds(text, 0, text.length(), textBounds);
+            width = textBounds.width() + coinPriceMarginRight;
+            subSize ++;
+        }
     }
 
     public static class DepthViewData {

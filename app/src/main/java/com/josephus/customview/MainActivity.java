@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         depthViewData.bidUpOrDown = 0;
         depthViewData.askCoinPrice = "4,030,000";
         depthViewData.askCurrencyPrice = "4,030,000 KRW";
-        depthViewData.askAmount = "111,112,390,013.43";
+        depthViewData.askAmount = "6,123,789,390,013.43";
         depthViewData.askProgress = 69;
         depthViewData.askUpOrDown = 1;
         ((DepthView) findViewById(R.id.dv)).setData(depthViewData);
