@@ -47,6 +47,7 @@ public class DepthView extends View {
     private Paint itemCurrencyPaint;
     private RectF rectF;
     private Rect textBounds;
+    private int subSize = 1;
 
     private DepthViewData data;
 
@@ -151,24 +152,64 @@ public class DepthView extends View {
         // 绘制数量
         Paint.FontMetricsInt fontMetrics = itemAmountPaint.getFontMetricsInt();
         float baselineY = getMeasuredHeight() / 2.0f + ((fontMetrics.descent - fontMetrics.ascent) / 2.0f - fontMetrics.descent);
-        canvas.drawText(data.bidAmount, paddingWidth + DensityUtils.dp2px(context, 13),
+
+        itemAmountPaint.getTextBounds(data.bidAmount, 0, data.bidAmount.length(), textBounds);
+        int w = textBounds.width() + amountMarginLeft;
+        while(w > itemMaxWidth / 2.0f) {
+            itemAmountPaint.setTextSize(amountSize - subSize);
+            itemAmountPaint.getTextBounds(data.bidAmount, 0, data.bidAmount.length(), textBounds);
+            w = textBounds.width() + amountMarginLeft;
+            subSize ++;
+        }
+        canvas.drawText(data.bidAmount, paddingWidth + amountMarginLeft,
                 baselineY, itemAmountPaint);
-        canvas.drawText(data.askAmount, paddingWidth * 2 + itemMaxWidth + DensityUtils.dp2px(context, 13),
+
+        subSize = 1;
+        itemAmountPaint.setTextSize(amountSize);
+        itemAmountPaint.getTextBounds(data.askAmount, 0, data.askAmount.length(), textBounds);
+        w = textBounds.width() + amountMarginLeft;
+        while(w > itemMaxWidth / 2.0f) {
+            itemAmountPaint.setTextSize(amountSize - subSize);
+            itemAmountPaint.getTextBounds(data.askAmount, 0, data.askAmount.length(), textBounds);
+            w = textBounds.width() + amountMarginLeft;
+            subSize ++;
+        }
+        canvas.drawText(data.askAmount, paddingWidth * 2 + itemMaxWidth + amountMarginLeft,
                 baselineY, itemAmountPaint);
 
         // 绘制价格
+        fontMetrics = itemCoinPricePaint.getFontMetricsInt();
+        baselineY = (paddingHeight + getMeasuredHeight() / 2.0f) / 2.0f + ((fontMetrics.descent - fontMetrics.ascent) / 2.0f - fontMetrics.descent);
+
+        itemCoinPricePaint.getTextBounds(data.bidCoinPrice, 0, data.bidCoinPrice.length(), textBounds);
+        subSize = 1;
+        w = textBounds.width() + coinPriceMarginRight;
+        while(w > itemMaxWidth / 2.0f) {
+            itemCoinPricePaint.setTextSize(coinSize - subSize);
+            itemCoinPricePaint.getTextBounds(data.bidCoinPrice, 0, data.bidCoinPrice.length(), textBounds);
+            w = textBounds.width() + coinPriceMarginRight;
+            subSize ++;
+        }
         if (data.bidUpOrDown == 1) {
             itemCoinPricePaint.setColor(upColor);
         } else {
             itemCoinPricePaint.setColor(downColor);
         }
-        fontMetrics = itemCoinPricePaint.getFontMetricsInt();
-        itemCoinPricePaint.getTextBounds(data.bidCoinPrice, 0, data.bidCoinPrice.length(), textBounds);
-        baselineY = (paddingHeight + getMeasuredHeight() / 2.0f) / 2.0f + ((fontMetrics.descent - fontMetrics.ascent) / 2.0f - fontMetrics.descent);
         canvas.drawText(data.bidCoinPrice,
                 paddingWidth + itemMaxWidth - coinPriceMarginRight - (textBounds.right - textBounds.left),
                 baselineY,
                 itemCoinPricePaint);
+
+        itemCoinPricePaint.setTextSize(coinSize);
+        subSize = 1;
+        itemCoinPricePaint.getTextBounds(data.askCoinPrice, 0, data.askCoinPrice.length(), textBounds);
+        w = textBounds.width() + coinPriceMarginRight;
+        while(w > itemMaxWidth / 2.0f) {
+            itemCoinPricePaint.setTextSize(coinSize - subSize);
+            itemCoinPricePaint.getTextBounds(data.askCoinPrice, 0, data.askCoinPrice.length(), textBounds);
+            w = textBounds.width() + coinPriceMarginRight;
+            subSize ++;
+        }
         if (data.askUpOrDown == 1) {
             itemCoinPricePaint.setColor(upColor);
         } else {
@@ -181,12 +222,32 @@ public class DepthView extends View {
 
         // 绘制法币价格
         fontMetrics = itemCurrencyPaint.getFontMetricsInt();
-        itemCurrencyPaint.getTextBounds(data.bidCurrencyPrice, 0, data.bidCurrencyPrice.length(), textBounds);
         baselineY = (getMeasuredHeight() / 2.0f + (getMeasuredHeight() - paddingHeight)) / 2.0f + ((fontMetrics.descent - fontMetrics.ascent) / 2.0f - fontMetrics.descent);
+
+        itemCurrencyPaint.getTextBounds(data.bidCurrencyPrice, 0, data.bidCurrencyPrice.length(), textBounds);
+        subSize = 1;
+        w = textBounds.width() + coinPriceMarginRight;
+        while(w > itemMaxWidth / 2.0f) {
+            itemCurrencyPaint.setTextSize(currencySize - subSize);
+            itemCurrencyPaint.getTextBounds(data.bidCurrencyPrice, 0, data.bidCurrencyPrice.length(), textBounds);
+            w = textBounds.width() + coinPriceMarginRight;
+            subSize ++;
+        }
         canvas.drawText(data.bidCurrencyPrice,
                 paddingWidth + itemMaxWidth - coinPriceMarginRight - (textBounds.right - textBounds.left),
                 baselineY,
                 itemCurrencyPaint);
+
+        itemCurrencyPaint.setTextSize(currencySize);
+        itemCurrencyPaint.getTextBounds(data.askCurrencyPrice, 0, data.askCurrencyPrice.length(), textBounds);
+        subSize = 1;
+        w = textBounds.width() + coinPriceMarginRight;
+        while(w > itemMaxWidth / 2.0f) {
+            itemCurrencyPaint.setTextSize(currencySize - subSize);
+            itemCurrencyPaint.getTextBounds(data.askCurrencyPrice, 0, data.askCurrencyPrice.length(), textBounds);
+            w = textBounds.width() + coinPriceMarginRight;
+            subSize ++;
+        }
         canvas.drawText(data.askCurrencyPrice,
                 getMeasuredWidth() - paddingWidth - textBounds.right - coinPriceMarginRight,
                 baselineY,
